@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ягодки</title>
+</head>
+<body>
+    <h1 style="font-family: Calibri">This is the data you requested, sir</h1>
+    <span style="display: none"> {{ .data }} </span>
+    <pre></pre>
+</body>
+</html>
+
+<script>
+    let data =  JSON.parse(document.querySelector('span').innerHTML)
+    document.querySelector('pre').textContent = JSON.stringify(data, undefined, 2);
+</script>
