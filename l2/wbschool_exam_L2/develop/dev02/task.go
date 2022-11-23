@@ -1,5 +1,11 @@
 package main
 
+import (
+	"errors"
+	"fmt"
+	"strconv"
+)
+
 /*
 === Задача на распаковку ===
 
@@ -18,6 +24,43 @@ package main
 Функция должна проходить все тесты. Код должен проходить проверки go vet и golint.
 */
 
-func main() {
+func Repeat(char rune, n int) []rune {
+	res := make([]rune, 0)
+	for i := 0; i < n; i++ {
+		res = append(res, char)
+	}
+	return res
+}
 
+func Parse(s string) (string, error) {
+	runes := []rune(s)        // convert to runes for iterating
+	result := make([]rune, 0) // result slice
+	last := rune(' ')         // last non-digit character
+	for i := 0; i < len(runes); i++ {
+		if string(runes[i]) == `\` { // escaping backslash
+			if i+1 < len(runes) {
+				i++
+				last = runes[i]
+				result = append(result, last)
+				continue
+			}
+		}
+		num, err := strconv.Atoi(string(runes[i])) // check if digit and convert to int
+		if err != nil {                            // if non-digit
+			last = runes[i]               // save last
+			result = append(result, last) // add to result slice
+		} else {
+			if last == ' ' { // if string starts with digit its invalid
+				return "", errors.New("invalid string")
+			}
+			result = append(result, Repeat(last, num-1)...) // append to res last rune num-1 times
+		}
+	}
+	return string(result), nil
+}
+
+func main() {
+	a := "a4bc2d5e"
+	fmt.Println(a)
+	fmt.Println(Parse(a))
 }
