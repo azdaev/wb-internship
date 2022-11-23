@@ -1,5 +1,11 @@
 package main
 
+import (
+	"fmt"
+	"sort"
+	"strings"
+)
+
 /*
 === Поиск анаграмм по словарю ===
 
@@ -19,6 +25,47 @@ package main
 Программа должна проходить все тесты. Код должен проходить проверки go vet и golint.
 */
 
-func main() {
+func SortString(word string) string {
+	letters := []rune(word)
+	sort.Slice(letters, func(i, j int) bool {
+		return letters[i] < letters[j]
+	})
+	return string(letters)
+}
 
+func GroupAnagrams(words []string) *map[string][]string {
+	// Словарь для избежания дубликатов
+	dictionary := make(map[string]bool, len(words))
+	// Мапа - предрезультат
+	m := make(map[string][]string)
+	// Мапа - результат
+	r := make(map[string][]string)
+
+	// Итерируемся по словам
+	for _, upperWord := range words {
+
+		// Переводим слово в нижний регистр
+		word := strings.ToLower(upperWord)
+		if len(word) < 2 {
+			continue // Пропускаем слова из одной буквы
+		}
+
+		// Если слова уже нет в каком-либо множестве
+		if !dictionary[word] {
+			m[SortString(word)] = append(m[SortString(word)], word)
+			dictionary[word] = true
+		}
+	}
+
+	for _, v := range m {
+		firstWord := v[0]
+		sort.Strings(v)
+		r[firstWord] = v
+	}
+
+	return &r
+}
+
+func main() {
+	fmt.Print(*GroupAnagrams([]string{"eat", "ate", "tea", "bike", "kibe", "cab", "bca", "abc", "abc"}))
 }
