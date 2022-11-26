@@ -66,7 +66,7 @@ func MySort(data []byte, r, n, u bool, k int) (string, error) {
 			if numRow, err := strconv.Atoi(row); err == nil {
 				numbers = append(numbers, numRow)
 			} else {
-				return "", errors.New("Not numerical data")
+				return "", errors.New("not numerical data")
 			}
 		}
 		sort.Ints(numbers)
