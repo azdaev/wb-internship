@@ -25,6 +25,7 @@ import (
 Программа должна проходить все тесты. Код должен проходить проверки go vet и golint.
 */
 
+// SortString - функция для сортировки букв в строке
 func SortString(word string) string {
 	letters := []rune(word)
 	sort.Slice(letters, func(i, j int) bool {
